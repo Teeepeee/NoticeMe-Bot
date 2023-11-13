@@ -1,0 +1,1825 @@
+import multiprocessing
+multiprocessing.freeze_support()
+import time
+import random
+from rune_solver import *
+from interception import *
+from game import Game, Region
+from player import Player
+import pyautogui
+import sys
+import xml.etree.ElementTree
+ET = ElementTree
+etree
+import dropbox
+import cv2
+import telegram
+from sympy import *
+import pyperclip
+import psutil
+import subprocess
+import os
+import configparser
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from threading import Thread
+import re
+import tkinter as tk
+from PIL import Image as PILImage
+from PIL import ImageGrab, Image, ImageTk
+from tkinter import *
+from tkinter import messagebox
+from tkinter import filedialog
+import uuid
+from tqdm import tqdm
+import customtkinter
+from minimap import shoot
+import webbrowser
+import zipfile
+import numpy as np
+import kthread
+import win32gui
+import win32api
+import win32con
+import gdi_capture
+import requests
+import keyboard as kb
+import winsound
+from table import Ui_MainWindow
+from PyQt6 import QtCore, QtGui, QtWidgets
+from pystray import MenuItem as item
+import pystray
+from playsound import playsound
+import gspread
+from datetime import datetime
+from google.auth.exceptions import DefaultCredentialsError
+from tkinter import PhotoImage
+from PIL import ImageGrab
+from functools import partial
+ImageGrab.grab = partial(ImageGrab.grab, True, **('all_screens',))
+from plyer import notification
+import pickle
+config_file = 'file_location.conf'
+current_path = os.path.dirname(os.path.abspath(__file__))
+data_path = os.path.join(current_path, 'data')
+config = configparser.ConfigParser()
+config.read(os.path.join(data_path, 'setup.txt'))
+chat_id = config['DEFAULT']['chat_id']
+my_token = config['DEFAULT']['my_token']
+npc_chat_key = str(config['DEFAULT']['npc_chat_key'])
+main_attack_key = str(config['DEFAULT']['main_attack_key'])
+jump_key = str(config['DEFAULT']['jump_key'])
+inventory_key = str(config['DEFAULT']['inventory_key'])
+world_map_key = str(config['DEFAULT']['world_map_key'])
+debug = eval(config['DEFAULT']['debug'])
+character = int(config['DEFAULT']['character'])
+device_id = str(uuid.getnode())
+device_id = device_id.replace('2', 'b').replace('3', 'c').replace('5', 'e').replace('6', 'f').replace('8', 'x').replace('9', 'z')
+checkmap_png = os.path.join(current_path, 'data', 'checkmap.png')
+sound = os.path.join(current_path, 'data', 'sound.mp3')
+sound2 = os.path.join(current_path, 'data', 'sound2.mp3')
+sound3 = os.path.join(current_path, 'data', 'sound3.mp3')
+anydesk_png = os.path.join(current_path, 'data', 'anydesk.png')
+anydesk_run_png = os.path.join(current_path, 'data', 'anydesk_run.png')
+anydesk_minize_png = os.path.join(current_path, 'data', 'anydesk_minize.png')
+mobdespawn_png = os.path.join(current_path, 'data', 'crit.png')
+ld1_aries_png = os.path.join(current_path, 'data', 'aries', 'ld1.png')
+ld2_aries_png = os.path.join(current_path, 'data', 'aries', 'ld2.png')
+ld3_aries_png = os.path.join(current_path, 'data', 'aries', 'ld3.png')
+ld4_aries_png = os.path.join(current_path, 'data', 'aries', 'ld4.png')
+ld5_aries_png = os.path.join(current_path, 'data', 'aries', 'ld5.png')
+ld6_aries_png = os.path.join(current_path, 'data', 'aries', 'ld6.png')
+login_button_png = os.path.join(current_path, 'data', 'login_button.png')
+mp_png = os.path.join(current_path, 'data', 'mp.png')
+eb_hp_png = os.path.join(current_path, 'data', 'eb_hp.png')
+death_png = os.path.join(current_path, 'data', 'death.png')
+death2_png = os.path.join(current_path, 'data', 'death2.png')
+chat_button_png = os.path.join(current_path, 'data', 'chat_button.png')
+rune_buff_png = os.path.join(current_path, 'data', 'rune_template.png')
+rune_buff_png2 = os.path.join(current_path, 'data', 'rune_buff_template.jpg')
+update_exe = os.path.join(current_path, 'updater-msg.exe')
+current_map_png = os.path.join(current_path, 'data', 'current_map.png')
+teleport_png = os.path.join(current_path, 'data', 'teleport.png')
+end_chat_button_png = os.path.join(current_path, 'data', 'end_chat_button.png')
+world_button_png = os.path.join(current_path, 'data', 'world_button.png')
+character_button_png = os.path.join(current_path, 'data', 'character_button.png')
+use_button_png = os.path.join(current_path, 'data', 'use_button.png')
+return_scroll_png = os.path.join(current_path, 'data', 'return_scroll.png')
+cc_button_png = os.path.join(current_path, 'data', 'cc_button.png')
+cash_button_png = os.path.join(current_path, 'data', 'cash_button.png')
+safety_charm_png = os.path.join(current_path, 'data', 'safety_charm.png')
+world_map_png = os.path.join(current_path, 'data', 'world_map.png')
+ok_button_png = os.path.join(current_path, 'data', 'ok_button.png')
+storage_png = os.path.join(current_path, 'data', 'storage.png')
+seller_png = os.path.join(current_path, 'data', 'seller.png')
+count = 0
+pyautogui.FAILSAFE = False
+new_hwid = subprocess.check_output('wmic diskdrive get serialnumber', True, True, **('shell', 'text')).strip().split('\n')[-1]
+new_hwid = new_hwid.replace('2', 'B').replace('3', 'C').replace('5', 'E').replace('6', 'F').replace('8', 'X').replace('9', 'Z').replace('-', '0')
+bot = telegram.Bot(my_token, **('token',))
+file_name = 'gms.xml'
+dbx = dropbox.Dropbox('46vrcvfyv79ehfu', 't9rnlsm6jm7hsni', 'XxPcusmyVM0AAAAAAAAAAUzRZOWzzvln5M_ouypa8p2IRh5_UtpiA4zcaHt2OUtn', **('app_key', 'app_secret', 'oauth2_refresh_token'))
+flag = True
+eb_flag = False
+current_version = '4.8'
+window_title = 'MapleStory.exe'
+
+def call_update():
+    subprocess.Popen([
+        'start',
+        '',
+        update_exe], True, **('shell',))
+
+gs = gspread.service_account(os.path.join(current_path, 'data', 'cre.json'))
+sht = gs.open_by_key('1JgKf03jDV9ENjXSRkBIX6_084sCNUTry0JHxY-nYpew')
+
+def google_sheets_connection():
+
+    try:
+        hwids = sht.sheet1.col_values('1')
+        if hwids:
+            pass
+    finally:
+        return None
+    print('Error while connecting to Server,try again...')
+    time.sleep(1)
+    continue
+
+
+
+def check_for_run1():
+    global hwid, hwid2, index, date_difference, hwid2, hwid2, hwid2
+
+    try:
+    
+        if version != current_version:
+            print('New update')
+            call_update_thread = kthread.KThread(call_update, **('target',))
+            call_update_thread.start()
+            time.sleep(1)
+            close_self()
+        else:
+            print('Verifying license...')
+            sent_message = send_message('Software is running, press /help to display commands list')
+            timestamp = str(sent_message.date)
+            hwids = google_sheets_connection()
+            for None in hwids:
+                hwid = None
+                if hwid == new_hwid:
+                    hwid2 = hwid
+                    index = hwids.index(hwid)
+                    matching_row = sht.sheet1.cell(index + 1, 2).value
+                    if matching_row:
+                        date_expire = datetime.strptime(sht.sheet1.cell(index + 1, 2).value, '%d/%m/%Y').date()
+                        if timestamp:
+                            current_date_str = timestamp[:10]
+                            current_date_str2 = timestamp[:10]
+                            current_date = datetime.strptime(current_date_str, '%Y-%m-%d').date()
+                            date_difference = (date_expire - current_date).days
+                            if date_difference >= 0:
+                                label2.configure(f'''{date_difference} Day left''', **('text',))
+                                label2.pack('center', 'bottom', **('anchor', 'side'))
+                                hwid_root = ET.Element('root')
+                                hwid_root1 = ET.SubElement(hwid_root, 'hwidpaid')
+                                hwid_root1.text = 'Permission granted'
+                                hwid_tree = ET.ElementTree(hwid_root)
+                                hwid_tree.write('gms.xml')
+                                cell_format = {
+                                    'backgroundColor': {
+                                        'red': 0,
+                                        'green': 1,
+                                        'blue': 0 } }
+                                sht.sheet1.format(f'''C{index + 1}''', cell_format)
+                                sht.sheet1.update_cell(index + 1, 3, f'''ON {current_date_str2}''')
+                            else:
+                                label2.configure(f'''{date_difference} Day left''', **('text',))
+                                label2.pack('center', 'bottom', **('anchor', 'side'))
+                                print('License Expired')
+                                root2 = ET.Element('root')
+                                hwid2 = ET.SubElement(root2, 'hwidpaid')
+                                tree2 = ET.ElementTree(root2)
+                                tree2.write('gms.xml')
+                                time.sleep(60)
+                                pid = os.getpid()
+                                current_process = psutil.Process(pid)
+                                current_process.terminate()
+                                window.destroy()
+                            root2 = ET.Element('root')
+                            hwid2 = ET.SubElement(root2, 'hwidpaid')
+                            tree2 = ET.ElementTree(root2)
+                            tree2.write('gms.xml')
+                            continue
+                            tree3 = ET.parse('gms.xml')
+                            root3 = tree3.getroot()
+                            for hwidpaid in root3.findall('hwidpaid'):
+                                if hwidpaid.text == 'Permission granted':
+                                    print('Permission granted')
+                                else:
+                                    print('Permission denial')
+                                    print('Dm Noticeme#8063 for more info')
+                                    time.sleep(60)
+                                    pid = os.getpid()
+                                    current_process = psutil.Process(pid)
+                                    current_process.terminate()
+                                    window.destroy()
+                        else:
+                            hwid2 = 0
+                time.sleep(40000)
+                continue
+
+
+
+def lie_detector():
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    if hwnd is None:
+        print('MapleStory not found')
+    (left, top, right, bottom) = win32gui.GetWindowRect(hwnd)
+    width = right - left
+    height = bottom - top
+    check_hunter_portal_options = hunter_portal_options.get()
+    if checkbox_var3.get() or status1:
+        progressld.set(0)
+        progressld.configure('green', **('progress_color',))
+        time.sleep(0.2)
+        progressld.set(0.2)
+        time.sleep(0.2)
+        progressld.set(0.4)
+        time.sleep(0.2)
+        progressld.set(0.6)
+        time.sleep(0.2)
+        progressld.set(0.8)
+        time.sleep(0.2)
+        progressld.set(1)
+        end_chat_button = cv2.imread(end_chat_button_png)
+        end_chat_button_location = multi_match(end_chat_button, 0.9, **('threshold',))
+        if end_chat_button_location:
+            progressld.configure('red', **('progress_color',))
+            if check_hunter_portal_options == 'Notify':
+                send_message('You have mistakenly entered the hunter portals')
+                send_screenshot('You have mistakenly entered the hunter portals')
+                time.sleep(3)
+            elif check_hunter_portal_options == 'Close':
+                pyautogui.click(end_chat_button_location[0], end_chat_button_location[1] + 20)
+                time.sleep(0.2)
+                hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                centerx = (x + w) / 2
+                centery = (y + h) / 2
+                target = (w - 20, centery)
+                p1.doubleclick(target)
+                time.sleep(3)
+            else:
+                send_message('You have mistakenly entered the hunter portals')
+                send_screenshot('You have mistakenly entered the hunter portals')
+                pyautogui.click(end_chat_button_location[0], end_chat_button_location[1] + 20)
+                time.sleep(0.2)
+                hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                centerx = (x + w) / 2
+                centery = (y + h) / 2
+                target = (w - 20, centery)
+                p1.doubleclick(target)
+                send_screenshot('')
+                time.sleep(3)
+        else:
+            time.sleep(1)
+        if not status1:
+            return None
+        return None
+
+
+def check_map():
+    global flag
+    r = Region()
+    consecutive_differences = 0
+    max_consecutive_differences = 5
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    if hwnd is None:
+        print('MapleStory not found')
+    (left, top, right, bottom) = win32gui.GetWindowRect(hwnd)
+    width = int((right - left) / 2)
+    height = int((bottom - top) / 2)
+    if checkbox_var.get():
+        map1 = r.get_region_map()
+        print(map1)
+        if status1:
+            time.sleep(0.05)
+            progressmap.set(0)
+            progressmap.configure('green', **('progress_color',))
+            time.sleep(0.05)
+            progressmap.set(0.2)
+            time.sleep(0.05)
+            progressmap.set(0.3)
+            time.sleep(0.05)
+            progressmap.set(0.5)
+            time.sleep(0.1)
+            map2 = r.get_region_map()
+            time.sleep(0.1)
+            progressmap.set(0.8)
+            if map1 != map2:
+                consecutive_differences += 1
+                progressmap.configure('red', **('fg_color',))
+                if consecutive_differences >= max_consecutive_differences:
+                    checkmap_image = cv2.imread(checkmap_png)
+                    checkmap_location = multi_match(checkmap_image, 0.8, **('threshold',))
+                    if checkmap_location is None:
+                        print(map2)
+                        flag = False
+                        progressmap.set(1)
+                        progressmap.configure('red', **('progress_color',))
+                        if t1.is_alive():
+                            t1.terminate()
+                        p1.release_all()
+                        alert(sound3)
+                        print('You has been warped to somewhere')
+                        send_message('You has been warped to somewhere')
+                        send_screenshot('You has been warped to somewhere')
+                time.sleep(0.2)
+            else:
+                progressmap.configure('azure4', **('fg_color',))
+                progressmap.set(1)
+                consecutive_differences = 0
+            if not status1:
+                return None
+            return None
+        return None
+
+
+def death():
+    global flag, t1, t1
+    death_image = cv2.imread(death_png)
+    death2_image = cv2.imread(death2_png)
+    check_death_option = death_options.get()
+    if checkbox_var7.get() or status1:
+        progressdeath.configure('green', **('progress_color',))
+        progresseb.set(0)
+        time.sleep(0.5)
+        progressdeath.set(0.2)
+        time.sleep(0.5)
+        progressdeath.set(0.4)
+        time.sleep(0.5)
+        progressdeath.set(0.6)
+        time.sleep(0.5)
+        progressdeath.set(0.7)
+        death_check = multi_match(death_image, 0.88, **('threshold',))
+        death_check2 = multi_match(death2_image, 0.88, **('threshold',))
+        time.sleep(0.5)
+        progressdeath.set(0.8)
+        if death_check or death_check2:
+            time.sleep(0.5)
+            death_check3 = multi_match(death2_image, 0.88, **('threshold',))
+            if death_check3:
+                if check_death_option == 'Notify & Stop':
+                    flag = False
+                    progressdeath.set(1)
+                    progressdeath.configure('red', **('progress_color',))
+                    print('You are dead')
+                    if t1.is_alive():
+                        t1.terminate()
+                    p1.release_all()
+                    save_map()
+                    revive()
+                    alert(sound)
+                    send_message('You are dead')
+                    send_screenshot('You are dead')
+                else:
+                    progressdeath.set(1)
+                    progressdeath.configure('red', **('progress_color',))
+                    if t1.is_alive():
+                        t1.terminate()
+                    p1.release_all()
+                    save_map()
+                    revive()
+                    teleport()
+                    r = Region()
+                    mini_map_config = r.get_region_map()
+                    g = Game(mini_map_config)
+                    other_location = g.get_other_location()
+                    if other_location is False:
+                        t1 = kthread.KThread(auto, **('target',))
+                        hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                        (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                        centerx = (x + w) / 2
+                        centery = (y + h) / 2
+                        target = (w - 20, centery)
+                        p1.doubleclick(target)
+                        time.sleep(0.2)
+                        t1.start()
+                        print('\nRe-run macro')
+                    else:
+                        print('Someone here,trying cc to find empty ch')
+                        cc()
+                        t1 = kthread.KThread(auto, **('target',))
+                        hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                        (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                        centerx = (x + w) / 2
+                        centery = (y + h) / 2
+                        target = (w - 20, centery)
+                        p1.doubleclick(target)
+                        time.sleep(0.2)
+                        t1.start()
+                        print('\nRe-run macro')
+            else:
+                progressdeath.set(1)
+                time.sleep(2)
+        if not status1:
+            return None
+        return None
+
+
+def eb():
+    global flag, eb_flag, eb_flag
+    eb_image = cv2.imread(eb_hp_png)
+    count_eb = 0
+    max_count = 3
+    check_eb_option = eb_options.get()
+    if checkbox_var6.get() or status1:
+        progresseb.configure('green', **('progress_color',))
+        progresseb.set(0)
+        time.sleep(0.5)
+        progresseb.set(0.2)
+        time.sleep(0.5)
+        progresseb.set(0.4)
+        time.sleep(0.5)
+        progresseb.set(0.6)
+        img = capture_window()
+        time.sleep(0.5)
+        progresseb.set(0.7)
+        image_eb = multi_match2(img[(:img.shape[0] // 8, :)], eb_image, 0.9, **('threshold',))
+        time.sleep(0.5)
+        progresseb.set(0.8)
+        if image_eb:
+            count_eb += 1
+            progressmap.configure('red', **('fg_color',))
+            if count_eb >= max_count:
+                if check_eb_option == 'Notify & Stop':
+                    flag = False
+                    progresseb.set(1)
+                    progresseb.configure('red', **('progress_color',))
+                    print('Elite Boss')
+                    if t1.is_alive():
+                        t1.terminate()
+                    p1.release_all()
+                    alert(sound)
+                    send_message('Elite Boss')
+                    send_screenshot('Elite Boss')
+                elif check_eb_option == 'Just Notify':
+                    progresseb.set(1)
+                    progresseb.configure('red', **('progress_color',))
+                    print('Elite Boss')
+                    alert(sound)
+                    send_message('Elite Boss')
+                    send_screenshot('Elite Boss')
+                elif check_eb_option == 'Raise eb_flag = True':
+                    eb_flag = True
+                elif t1.is_alive():
+                    t1.terminate()
+                p1.release_all()
+                progresseb.set(1)
+                progresseb.configure('red', **('progress_color',))
+                cc()
+            else:
+                eb_flag = False
+                count_eb = 0
+                progresseb.set(1)
+                time.sleep(2)
+        if not status1:
+            return None
+        return None
+
+
+def check_player():
+    check_player_option = player_options.get()
+    if checkbox_var2.get() or status1:
+        progressplayer.configure('green', **('progress_color',))
+        progressplayer.set(0)
+        time.sleep(0.5)
+        progressplayer.set(0.2)
+        time.sleep(0.5)
+        progressplayer.set(0.4)
+        time.sleep(0.5)
+        progressplayer.set(0.6)
+        if check_player_option == 'Stranger & Guildies & Buddies':
+            other_location = g.get_other_location()
+            if other_location > 0:
+                progressplayer.set(1)
+                progressplayer.configure('red', **('progress_color',))
+                print('Someone entered ur map')
+                alert(sound3)
+                send_message('Someone entered ur map')
+                send_screenshot('Someone entered ur map')
+                time.sleep(3)
+            else:
+                progressplayer.set(1)
+                time.sleep(2)
+        elif check_player_option == 'Guildies & Buddies':
+            guildies_and_buddies_location = g.get_guildies_and_buddies_location()
+            if guildies_and_buddies_location > 0:
+                progressplayer.set(1)
+                progressplayer.configure('red', **('progress_color',))
+                print('Someone entered ur map')
+                alert(sound3)
+                send_message('Someone entered ur map')
+                send_screenshot('Someone entered ur map')
+                time.sleep(3)
+            else:
+                progressplayer.set(1)
+                time.sleep(2)
+        else:
+            stranger_location = g.get_stranger_location()
+            if stranger_location > 0:
+                progressplayer.set(1)
+                progressplayer.configure('red', **('progress_color',))
+                print('Someone entered ur map')
+                alert(sound3)
+                send_message('Someone entered ur map')
+                send_screenshot('Someone entered ur map')
+                time.sleep(3)
+            else:
+                progressplayer.set(1)
+                time.sleep(2)
+        if not status1:
+            return None
+        return None
+
+
+def revive():
+    death2_image = cv2.imread(death2_png)
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    print('Reviving...')
+    status = True
+    if status:
+        time.sleep(0.5)
+        p1.click(target)
+        death_check2 = multi_match(death2_image, 0.9, **('threshold',))
+        if death_check2:
+            pyautogui.click(death_check2[0], death_check2[1] + 25)
+            time.sleep(3)
+            death_check3 = multi_match(death2_image, 0.9, **('threshold',))
+            if death_check3 is None:
+                print('Done')
+                return None
+            if not None:
+                return None
+            return None
+
+
+def teleport():
+    savemap_file = open('savemap.txt', 'r')
+    save_map_coords = savemap_file.read()
+    savemap_file.close()
+    (x_coord, y_coord) = map(int, save_map_coords.strip('()').split(','))
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    character_button = cv2.imread(character_button_png)
+    teleport_count = 0
+    status = True
+    ok_button = cv2.imread(ok_button_png)
+    storage = cv2.imread(storage_png)
+    seller = cv2.imread(seller_png)
+    end_chat_button = cv2.imread(end_chat_button_png)
+    if status:
+        p1.click(target)
+        time.sleep(0.5)
+        p1.press(inventory_key)
+        cash_button = cv2.imread(cash_button_png)
+        time.sleep(0.5)
+        cash_button_location = multi_match(cash_button, 0.9, **('threshold',))
+        if cash_button_location:
+            pyautogui.doubleClick(cash_button_location[0], cash_button_location[1] + 15)
+            time.sleep(0.5)
+            safety_charm = cv2.imread(safety_charm_png)
+            time.sleep(0.5)
+            safety_charm_location = multi_match(safety_charm, 0.9, **('threshold',))
+            if safety_charm_location:
+                pyautogui.doubleClick(safety_charm_location[0], safety_charm_location[1] + 25)
+                time.sleep(0.5)
+                print('Done')
+                p1.press(inventory_key)
+            else:
+                time.sleep(0.5)
+                print('No safety charm available')
+                p1.press(inventory_key)
+        elif status or status:
+            p1.click(target)
+            teleport_count += 1
+            if teleport_count >= 5:
+                send_message('Unknow error while trying to teleport to saved map')
+                teleport_count = 0
+                return None
+            end_chat_button_location = None(end_chat_button, 0.9, **('threshold',))
+            if end_chat_button_location:
+                pyautogui.click(end_chat_button_location[0], end_chat_button_location[1] + 20)
+                time.sleep(0.5)
+                p1.click(target)
+            storage_location = multi_match(storage, 0.9, **('threshold',))
+            if storage_location:
+                print('Closing Storage')
+                time.sleep(0.5)
+                p1.click((storage_location[0] - 60, storage_location[1]))
+                time.sleep(0.5)
+                p1.press('ESCAPE')
+                time.sleep(0.5)
+                p1.click(target)
+            seller_location = multi_match(seller, 0.9, **('threshold',))
+            if seller_location:
+                print('Closing Merchant')
+                time.sleep(0.5)
+                p1.click(target)
+                time.sleep(0.5)
+                p1.press('ESCAPE')
+                time.sleep(0.5)
+                p1.click(target)
+            time.sleep(0.5)
+            p1.press(world_map_key)
+            teleport = cv2.imread(teleport_png)
+            time.sleep(1)
+            word_map = cv2.imread(world_map_png)
+            word_map_location = multi_match(word_map, 0.9, **('threshold',))
+            if word_map_location:
+                pyautogui.doubleClick(x_coord + 6, y_coord + 32)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 33)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 34)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 35)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 36)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 37)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 38)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 39)
+                pyautogui.doubleClick(x_coord + 6, y_coord + 40)
+                p1.click(target)
+                time.sleep(0.5)
+                teleport_location = multi_match(teleport, 0.9, **('threshold',))
+                word_map_location = multi_match(word_map, 0.9, **('threshold',))
+                if word_map_location:
+                    if teleport_location:
+                        time.sleep(0.5)
+                        p1.press('ENTER')
+                        time.sleep(1)
+                        ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                        if ok_button_location is None:
+                            time.sleep(2)
+                            for i in range(6):
+                                time.sleep(0.1)
+                                p1.press(main_attack_key)
+                                time.sleep(0.5)
+                            print('Done')
+                            return None
+                        None.sleep(0.5)
+                        p1.press('ENTER')
+                        time.sleep(0.5)
+                    else:
+                        word_map_location = multi_match(word_map, 0.9, **('threshold',))
+                        if word_map_location:
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 32)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 33)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 34)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 35)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 36)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 37)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 38)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 39)
+                            pyautogui.doubleClick(x_coord + 5, y_coord + 40)
+                            p1.click(target)
+                            teleport_location = multi_match(teleport, 0.9, **('threshold',))
+                            if teleport_location:
+                                time.sleep(0.5)
+                                p1.press('ENTER')
+                                time.sleep(1)
+                                ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                                if ok_button_location is None:
+                                    time.sleep(2)
+                                    for i in range(6):
+                                        time.sleep(0.1)
+                                        p1.press(main_attack_key)
+                                        time.sleep(0.5)
+                                    print('Done')
+                                    return None
+                                None.sleep(0.5)
+                                p1.press('ENTER')
+                                time.sleep(0.5)
+                            else:
+                                word_map_location = multi_match(word_map, 0.9, **('threshold',))
+                                if word_map_location:
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 32)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 33)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 34)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 35)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 36)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 37)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 38)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 39)
+                                    pyautogui.doubleClick(x_coord + 7, y_coord + 40)
+                                    p1.click(target)
+                                    teleport_location = multi_match(teleport, 0.9, **('threshold',))
+                                    if teleport_location:
+                                        time.sleep(0.5)
+                                        p1.press('ENTER')
+                                        time.sleep(1)
+                                        ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                                        if ok_button_location is None:
+                                            time.sleep(2)
+                                            for i in range(6):
+                                                time.sleep(0.1)
+                                                p1.press(main_attack_key)
+                                                time.sleep(0.5)
+                                            print('Done')
+                                            return None
+                                        None.sleep(0.5)
+                                        p1.press('ENTER')
+                                        time.sleep(0.5)
+            if not status:
+                return None
+            return None
+
+
+def save_map():
+    print('Saving map...')
+    current_map_location = cv2.imread(current_map_png)
+    time.sleep(0.5)
+    world_button = cv2.imread(world_button_png)
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    save_map_count = 0
+    status = True
+    if status:
+        save_map_count += 1
+        if save_map_count >= 4:
+            send_message('Unknow error while trying to save map')
+            save_map_count = 0
+            return None
+        None.press(world_map_key)
+        time.sleep(0.5)
+        p1.click(target)
+        save_map1 = multi_match(current_map_location, 0.6, True, **('threshold', 'debug'))
+        if save_map1:
+            savemap_file = open('savemap.txt', 'w')
+            savemap_file.write(str(save_map1))
+            savemap_file.close()
+            print('Map has been saved')
+            p1.press(world_map_key)
+            return save_map1
+        None('Try again')
+        if not status:
+            return None
+        return None
+
+
+def cc():
+    print('Processing...')
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    status = True
+    cc_count = 0
+    if status:
+        cc_count += 1
+        if cc_count >= 40:
+            print('Could not find an available channel')
+            send_message('Could not find an available channel')
+            cc_count = 0
+            return None
+        for i in None(6):
+            time.sleep(0.1)
+            p1.press(main_attack_key)
+            time.sleep(0.5)
+        p1.click(target)
+        time.sleep(1)
+        p1.press('ESCAPE')
+        time.sleep(0.5)
+        p1.press('ENTER')
+        cc_button = cv2.imread(cc_button_png)
+        time.sleep(0.5)
+        cc_button_location = multi_match(cc_button, 0.9, **('threshold',))
+        if cc_button_location:
+            time.sleep(8)
+            p1.press('RIGHT')
+            time.sleep(0.3)
+            p1.press('ENTER')
+            ok_button = cv2.imread(ok_button_png)
+            ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+            time.sleep(1)
+            if ok_button_location is None:
+                time.sleep(1)
+                p1.click(target)
+                for i in range(6):
+                    time.sleep(0.1)
+                    p1.press(main_attack_key)
+                    time.sleep(0.5)
+                r = Region()
+                mini_map_config = r.get_region_map()
+                g = Game(mini_map_config)
+                other_location = g.get_other_location()
+                if other_location is False:
+                    print('Done')
+                    p1.click(target)
+                    return None
+                None.sleep(3)
+            else:
+                time.sleep(0.5)
+                p1.press('ENTER')
+        if not status:
+            return None
+        return None
+
+
+def start_run():
+    global t1, t2, t3, t4, t6, t7, flag, status, status1, status_mobsdepawn, status
+    if file_path is None:
+        print('No file selected')
+        send_message('No file selected')
+        return None
+    t1 = None.KThread(auto, **('target',))
+    t2 = kthread.KThread(check_map, **('target',))
+    t3 = kthread.KThread(lie_detector, **('target',))
+    t4 = kthread.KThread(check_player, **('target',))
+    t6 = kthread.KThread(eb, **('target',))
+    t7 = kthread.KThread(death, **('target',))
+    tree = ET.parse('gms.xml')
+    root = tree.getroot()
+    for hwidpaid in root.findall('hwidpaid'):
+        if hwidpaid.text == 'Permission granted':
+            if hwid2 == new_hwid:
+                flag = True
+                status = True
+                status1 = True
+                status_mobsdepawn = True
+                if t1.is_alive():
+                    t1.terminate()
+                if t2.is_alive():
+                    t2.terminate()
+                if t3.is_alive():
+                    t3.terminate()
+                if t4.is_alive():
+                    t4.terminate()
+                if t6.is_alive():
+                    t6.terminate()
+                if t7.is_alive():
+                    t7.terminate()
+                hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                centerx = (x + w) / 2
+                centery = (y + h) / 2
+                target = (w - 20, centery)
+                p1.doubleclick(target)
+                time.sleep(0.2)
+                t1.start()
+                t2.start()
+                t3.start()
+                t4.start()
+                t6.start()
+                t7.start()
+                print('Running...')
+                start_button.configure(customtkinter.DISABLED, **('state',))
+                player_location_button.configure(customtkinter.DISABLED, **('state',))
+                minimap_button.configure(customtkinter.DISABLED, **('state',))
+                continue
+            start_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            stop_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            player_location_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            minimap_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            open_file_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            screenshot_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            macro_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            discord_button.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox2.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox3.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox5.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox6.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            checkbox7.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            label.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            label2.configure('???', customtkinter.DISABLED, **('text', 'state'))
+            continue
+        status = False
+        print('Ur licenkey')
+        print('is invalid ')
+
+
+def stop():
+    global flag, status, status1, status_mobsdepawn
+    flag = False
+    status = False
+    status1 = False
+    status_mobsdepawn = False
+    print('Stopping...')
+
+    try:
+        if t1.is_alive():
+            t1.terminate()
+        if t2.is_alive():
+            t2.terminate()
+        if t3.is_alive():
+            t3.terminate()
+        if t4.is_alive():
+            t4.terminate()
+        if t6.is_alive():
+            t6.terminate()
+        if t7.is_alive():
+            t7.terminate()
+        p1.release_all()
+        start_button.configure(customtkinter.NORMAL, **('state',))
+        player_location_button.configure(customtkinter.NORMAL, **('state',))
+        minimap_button.configure(customtkinter.NORMAL, **('state',))
+    finally:
+        return None
+        return None
+
+
+
+def temp_disable_all_func():
+    global status1
+    status1 = False
+    print('Temp disable all detectors')
+
+
+def enable_all_func():
+    global status1, t2, t3, t4, t6
+    status1 = True
+    print('Re-Enable all detectors')
+    t2 = kthread.KThread(check_map, **('target',))
+    t3 = kthread.KThread(lie_detector, **('target',))
+    t4 = kthread.KThread(check_player, **('target',))
+    t6 = kthread.KThread(eb, **('target',))
+    t7 = kthread.KThread(death, **('target',))
+    if t1.is_alive():
+        t1.terminate()
+    if t2.is_alive():
+        t2.terminate()
+    if t3.is_alive():
+        t3.terminate()
+    if t4.is_alive():
+        t4.terminate()
+    if t6.is_alive():
+        t6.terminate()
+    if t7.is_alive():
+        t7.terminate()
+    t2.start()
+    t3.start()
+    t4.start()
+    t6.start()
+    t7.start()
+
+
+def show_console():
+    global view_console
+    view_console = not view_console
+    option = win32con.SW_SHOW if view_console else win32con.SW_HIDE
+    win32gui.ShowWindow(console, option)
+
+
+def hide_console():
+    global console, view_console
+    console = gdi_capture.find_window_from_executable_name('Spotify.exe')
+
+    try:
+        view_console = False
+        win32gui.ShowWindow(console, win32con.SW_HIDE)
+    finally:
+        return None
+        return None
+
+
+view_console = True
+
+def capture_window(debug = (False,)):
+    global hwnd
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+# WARNING: Decompyle incomplete
+
+
+def multi_match(template, threshold, debug = (0.95, False)):
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x1, y1, w1, h1) = win32gui.GetWindowRect(hwnd)
+    with gdi_capture.CaptureWindow(hwnd) as frame:
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+        None(None, None, None)
+# WARNING: Decompyle incomplete
+
+
+def multi_match2(frame, template, threshold, debug = (0.95, False)):
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x1, y1, w1, h1) = win32gui.GetWindowRect(hwnd)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray_template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    if debug:
+        cv2.imwrite('frame_gray.png', gray)
+        cv2.imwrite('template_gray.png', gray_template)
+    result = cv2.matchTemplate(gray, gray_template, cv2.TM_CCOEFF_NORMED)
+    locations = np.where(result >= threshold)
+    if len(locations[0]) == 0:
+        return None
+# WARNING: Decompyle incomplete
+
+
+def send_message(caption):
+    pass
+# WARNING: Decompyle incomplete
+
+
+def send_screenshot(caption):
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    if hwnd is None:
+        print('Window not found')
+        return None
+    with None.CaptureWindow(hwnd) as img:
+        img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+        cv2.imwrite(os.path.join(data_path, 'check_telegram.png'), img)
+        None(None, None, None)
+# WARNING: Decompyle incomplete
+
+
+def close_overlap():
+    teleport = cv2.imread(teleport_png)
+    teleport_location = multi_match(teleport, 0.9, **('threshold',))
+    if teleport_location:
+        time.sleep(0.5)
+        p1.press('ENTER')
+        time.sleep(0.5)
+        hwnd = gdi_capture.find_window_from_executable_name(window_title)
+        (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+        centerx = (x + w) / 2
+        centery = (y + h) / 2
+        target = (w - 20, centery)
+        p1.doubleclick(target)
+        return None
+
+
+def if_WAP_available(key):
+    img = capture_window()
+    WAP = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', 'WAP.png')), 0.85, **('threshold',))
+    WAP2 = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', 'WAP2.png')), 0.85, **('threshold',))
+    WAP3 = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', 'WAP3.png')), 0.85, **('threshold',))
+    if WAP and WAP2 or WAP3:
+        return None
+    None('WAP')
+    time.sleep(0.5)
+    p.press(key)
+    time.sleep(0.5)
+    close_overlap()
+
+
+def if_x2_coupon_available(key):
+    img = capture_window()
+    x2_coupon = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', '2x_coupon.png')), 0.85, **('threshold',))
+    x2_coupon2 = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', '2x_coupon2.png')), 0.85, **('threshold',))
+    x2_coupon3 = multi_match2(img[(:img.shape[0] // 9, img.shape[1] * 1 // 6:)], cv2.imread(os.path.join(current_path, 'data', '2x_coupon3.png')), 0.85, **('threshold',))
+    if x2_coupon and x2_coupon2 or x2_coupon3:
+        return None
+    None('x2 Coupon')
+    time.sleep(0.5)
+    p.press(key)
+    time.sleep(0.5)
+    close_overlap()
+
+
+def get_ip_address():
+    pass
+# WARNING: Decompyle incomplete
+
+
+def open_discord():
+    webbrowser.open('https://discord.gg/qMFrWBB4Mz')
+
+
+def record():
+    global t6
+    t6 = kthread.KThread(record_window, **('target',))
+    t6.start()
+
+
+def record_window():
+    global stop_flag
+    stop_flag = False
+    duration = 30
+    filename = 'Record.mp4'
+    codec = 'mp4v'
+    fps = 21
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    if hwnd is None:
+        print('Window not found')
+        return None
+    (left, top, right, bottom) = None.GetWindowRect(hwnd)
+    width = right - left
+    height = bottom - top
+# WARNING: Decompyle incomplete
+
+
+def alert(sound):
+    alert_run = kthread.KThread(alert_thread(sound), **('target',))
+    alert_run.start()
+
+
+def alert_thread(sound):
+    if sound == sound:
+        playsound(sound)
+        return None
+    if None == sound2:
+        playsound(sound2)
+        return None
+    if None == sound3:
+        playsound(sound3)
+        return None
+    None('Error opening alarm sound')
+
+
+def open_file():
+    global file_path
+    initialdir = '/'
+# WARNING: Decompyle incomplete
+
+
+def echo(update, context):
+    context.bot.send_message(update.effective_chat.id, update.message.text, **('chat_id', 'text'))
+
+
+def start_telegram(update, context):
+    start_run()
+    context.bot.send_message(update.effective_chat.id, 'Running..', **('chat_id', 'text'))
+
+
+def stop_telegram(update, context):
+    stop()
+    context.bot.send_message(update.effective_chat.id, 'Stopping..', **('chat_id', 'text'))
+
+
+def save_map_telegram(update, context):
+    print('Saving map...')
+    send_message('Saving map...')
+    current_map_location = cv2.imread(current_map_png)
+    time.sleep(0.5)
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    save_map_count = 0
+    status = True
+    if status:
+        save_map_count += 1
+        if save_map_count >= 4:
+            send_message('Unknow error while trying to save map')
+            save_map_count = 0
+            return None
+        None.press(world_map_key)
+        time.sleep(0.5)
+        p1.click(target)
+        save_map = multi_match(current_map_location, 0.6, True, **('threshold', 'debug'))
+        if save_map:
+
+            try:
+                bot.sendPhoto(update.effective_chat.id, open('final_template_result.png', 'rb'), 'Map has been saved', **('chat_id', 'photo', 'caption'))
+            finally:
+                pass
+            send_message('Map has been saved')
+            savemap_file = open('savemap.txt', 'w')
+            savemap_file.write(str(save_map))
+            savemap_file.close()
+            print('Map has been saved')
+            p1.press(world_map_key)
+            return None
+            print('Try again')
+            if not status:
+                return None
+            return None
+
+
+
+def teleport_telegram(update, context):
+    print('Processing...')
+    send_message('Processing...')
+    savemap_file = open('savemap.txt', 'r')
+    save_map_coords = savemap_file.read()
+    savemap_file.close()
+    (x_coord, y_coord) = map(int, save_map_coords.strip('()').split(','))
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    teleport_count = 0
+    status = True
+    ok_button = cv2.imread(ok_button_png)
+    storage = cv2.imread(storage_png)
+    seller = cv2.imread(seller_png)
+    end_chat_button = cv2.imread(end_chat_button_png)
+    if status:
+        p1.click(target)
+        teleport_count += 1
+        if teleport_count >= 5:
+            send_message('Unknow error while trying to teleport to saved map')
+            teleport_count = 0
+            return None
+        end_chat_button_location = None(end_chat_button, 0.9, **('threshold',))
+        if end_chat_button_location:
+            pyautogui.click(end_chat_button_location[0], end_chat_button_location[1] + 20)
+            time.sleep(0.5)
+            p1.click(target)
+        storage_location = multi_match(storage, 0.9, **('threshold',))
+        if storage_location:
+            print('Closing Storage')
+            time.sleep(0.5)
+            p1.click((storage_location[0] - 60, storage_location[1]))
+            time.sleep(0.5)
+            p1.press('ESCAPE')
+            time.sleep(0.5)
+            p1.click(target)
+        seller_location = multi_match(seller, 0.9, **('threshold',))
+        if seller_location:
+            print('Closing Merchant')
+            time.sleep(0.5)
+            p1.click(target)
+            time.sleep(0.5)
+            p1.press('ESCAPE')
+            time.sleep(0.5)
+            p1.click(target)
+        time.sleep(0.5)
+        p1.press(world_map_key)
+        teleport = cv2.imread(teleport_png)
+        time.sleep(1)
+        word_map = cv2.imread(world_map_png)
+        word_map_location = multi_match(word_map, 0.9, **('threshold',))
+        if word_map_location:
+            pyautogui.doubleClick(x_coord + 6, y_coord + 32)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 33)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 34)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 35)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 36)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 37)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 38)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 39)
+            pyautogui.doubleClick(x_coord + 6, y_coord + 40)
+            time.sleep(0.5)
+            teleport_location = multi_match(teleport, 0.9, **('threshold',))
+            word_map_location = multi_match(word_map, 0.9, **('threshold',))
+            if word_map_location:
+                if teleport_location:
+                    time.sleep(0.5)
+                    p1.press('ENTER')
+                    time.sleep(1)
+                    ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                    if ok_button_location is None:
+                        time.sleep(2)
+                        for i in range(6):
+                            time.sleep(0.1)
+                            p1.press(main_attack_key)
+                            time.sleep(0.5)
+                        print('Done')
+                        send_screenshot('Done')
+                        return None
+                    None.sleep(0.5)
+                    p1.press('ENTER')
+                    time.sleep(0.5)
+                else:
+                    word_map_location = multi_match(word_map, 0.9, **('threshold',))
+                    if word_map_location:
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 32)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 33)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 34)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 35)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 36)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 37)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 38)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 39)
+                        pyautogui.doubleClick(x_coord + 5, y_coord + 40)
+                        teleport_location = multi_match(teleport, 0.9, **('threshold',))
+                        if teleport_location:
+                            time.sleep(0.5)
+                            p1.press('ENTER')
+                            time.sleep(1)
+                            ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                            if ok_button_location is None:
+                                time.sleep(2)
+                                for i in range(6):
+                                    time.sleep(0.1)
+                                    p1.press(main_attack_key)
+                                    time.sleep(0.5)
+                                print('Done')
+                                send_screenshot('Done')
+                                return None
+                            None.sleep(0.5)
+                            p1.press('ENTER')
+                            time.sleep(0.5)
+                        else:
+                            word_map_location = multi_match(word_map, 0.9, **('threshold',))
+                            if word_map_location:
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 32)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 33)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 34)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 35)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 36)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 37)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 38)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 39)
+                                pyautogui.doubleClick(x_coord + 7, y_coord + 40)
+                                teleport_location = multi_match(teleport, 0.9, **('threshold',))
+                                if teleport_location:
+                                    time.sleep(0.5)
+                                    p1.press('ENTER')
+                                    time.sleep(1)
+                                    ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+                                    if ok_button_location is None:
+                                        time.sleep(2)
+                                        for i in range(6):
+                                            time.sleep(0.1)
+                                            p1.press(main_attack_key)
+                                            time.sleep(0.5)
+                                        print('Done')
+                                        send_screenshot('Done')
+                                        return None
+                                    None.sleep(0.5)
+                                    p1.press('ENTER')
+                                    time.sleep(0.5)
+        if not status:
+            return None
+        return None
+
+
+def town_telegram(update, context):
+    print('Processing...')
+    send_message('Processing...')
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    status = True
+    town_count = 0
+    if status:
+        town_count += 1
+        if town_count >= 10:
+            print('No return scroll available')
+            send_message('No return scroll available')
+            town_count = 0
+            return None
+        None.click(target)
+        time.sleep(0.5)
+        p1.press(inventory_key)
+        time.sleep(0.5)
+        use_button = cv2.imread(use_button_png)
+        time.sleep(0.5)
+        use_button_location = multi_match(use_button, 0.9, **('threshold',))
+        if use_button_location:
+            pyautogui.doubleClick(use_button_location[0], use_button_location[1] + 15)
+            time.sleep(0.5)
+            return_scroll = cv2.imread(return_scroll_png)
+            time.sleep(0.5)
+            return_scroll_location = multi_match(return_scroll, 0.9, **('threshold',))
+            if return_scroll_location:
+                pyautogui.doubleClick(return_scroll_location[0], return_scroll_location[1] + 25)
+                time.sleep(0.5)
+                p1.press('ENTER')
+                time.sleep(2)
+                p1.click(target)
+                time.sleep(0.1)
+                p1.press(inventory_key)
+                time.sleep(0.1)
+                print('Done')
+                send_screenshot('Done')
+                return None
+            if not None:
+                return None
+            return None
+
+
+def cc_telegram(update, context):
+    print('Processing...')
+    send_message('Processing...')
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    target = (w - 20, centery)
+    status = True
+    cc_count = 0
+    if status:
+        cc_count += 1
+        if cc_count >= 40:
+            print('Could not find an available channel')
+            send_message('Could not find an available channel')
+            cc_count = 0
+            return None
+        for i in None(6):
+            time.sleep(0.1)
+            p1.press(main_attack_key)
+            time.sleep(0.5)
+        p1.click(target)
+        time.sleep(1)
+        p1.press('ESCAPE')
+        time.sleep(0.5)
+        p1.press('ENTER')
+        cc_button = cv2.imread(cc_button_png)
+        time.sleep(0.5)
+        cc_button_location = multi_match(cc_button, 0.9, **('threshold',))
+        if cc_button_location:
+            time.sleep(8)
+            p1.press('RIGHT')
+            time.sleep(0.3)
+            p1.press('ENTER')
+            ok_button = cv2.imread(ok_button_png)
+            ok_button_location = multi_match(ok_button, 0.88, True, **('threshold', 'debug'))
+            time.sleep(1)
+            if ok_button_location is None:
+                time.sleep(1)
+                p1.click(target)
+                for i in range(6):
+                    time.sleep(0.1)
+                    p1.press(main_attack_key)
+                    time.sleep(0.5)
+                r = Region()
+                mini_map_config = r.get_region_map()
+                g = Game(mini_map_config)
+                other_location = g.get_other_location()
+                if other_location is False:
+                    print('Done')
+                    send_screenshot('Done')
+                    p1.click(target)
+                    return None
+                None.sleep(3)
+            else:
+                time.sleep(0.3)
+                p1.press('ENTER')
+        if not status:
+            return None
+        return None
+
+
+def revive_telegram(update, context):
+    print('Processing...')
+    send_message('Processing...')
+    death2_image = cv2.imread(death2_png)
+    death_check2 = multi_match(death2_image, 0.9, **('threshold',))
+    if death_check2:
+        pyautogui.click(death_check2[0], death_check2[1] + 25)
+        time.sleep(3)
+        print('Done')
+        send_screenshot('Done')
+        return None
+
+
+def check_telegram(update, context):
+    check_telegram = pyautogui.screenshot()
+    check_telegram.save(os.path.join(data_path, 'check_telegram.png'))
+    bot.sendPhoto(update.effective_chat.id, open(os.path.join(data_path, 'check_telegram.png'), 'rb'), 'Check', **('chat_id', 'photo', 'caption'))
+    send_screenshot('')
+
+
+def help_telegram(update, context):
+    context.bot.send_message(update.effective_chat.id, "'/start'  run the macro and selected detectors\n'/stop'  stop the macro and selected detectors.\n'/check'   take a screenshot and send it to Telegram\n'/chat text'   chat from Telegram\n'/revive'  revive ur character\n'/savemap'  save the current map's location\n'/teleport'  use hyper teleport rock teleport to saved map\n'/town'  open inventory then use return scroll\n'/cc'  change channels until found an empty channel", **('chat_id', 'text'))
+
+
+def chat_telegram(update, context):
+    print('Sending chat...')
+    messgages = update.message.text
+    hwnd = gdi_capture.find_window_from_executable_name(window_title)
+    (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+    centerx = (x + w) / 2
+    centery = (y + h) / 2
+    pyautogui.click(centerx, centery)
+    text = re.findall('\\d+|\\D+', messgages)
+    letters_str = ''.join(text)
+    chat = str(letters_str.replace('/chat', ''))
+    time.sleep(0.5)
+    chat_button = pyautogui.locateOnScreen(chat_button_png, (x, y, w, h), 0.8, **('region', 'confidence'))
+    if chat_button is not None:
+        pyautogui.click(chat_button[0] + 65, chat_button[1] + 5)
+    else:
+        time.sleep(0.2)
+        p1.press('ENTER')
+        time.sleep(0.5)
+    time.sleep(0.5)
+    pyautogui.typewrite(chat)
+    time.sleep(0.5)
+    p1.press('ENTER')
+    time.sleep(0.5)
+    pyautogui.click(centerx, centery)
+    send_screenshot('Screenshot')
+    time.sleep(0.5)
+    pyautogui.moveTo(w - 20, centery)
+
+
+def kill_process(process_name):
+    pass
+# WARNING: Decompyle incomplete
+
+
+def is_running(process_name):
+    pass
+# WARNING: Decompyle incomplete
+
+
+def show_logs():
+    messagebox.showinfo('Help', 'Checkmap will check according to the name of the map you are farming, the map image file will be saved as check_map in the data folder. Used to detect if GM warp you to another map while macro\nCheckplay will check if a someone enters the map (red dot)\nLie Detector will check and notify you if any LD appears\nMobsdespawn will check if the map you are farming on is cleared of all mobs')
+
+
+def table_thread():
+    thread_table = kthread.KThread(table, **('target',))
+    thread_table.start()
+
+
+def table():
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec())
+
+
+def get_player_location():
+    global mini_map_config, g
+    config = configparser.ConfigParser()
+    config.read(os.path.join(data_path, 'config.txt'))
+    mini_map_config = eval(config['DEFAULT']['region'])
+    g = Game(mini_map_config)
+    print(g.get_player_location())
+
+
+def minimap_region():
+    r = Region()
+    r.get_region()
+
+
+def updater1():
+    updater = Updater(my_token, True, **('token', 'use_context'))
+    dispatcher = updater.dispatcher
+    start_start_handler = CommandHandler('start', start_telegram)
+    dispatcher.add_handler(start_start_handler)
+    start_stop_handler = CommandHandler('stop', stop_telegram)
+    dispatcher.add_handler(start_stop_handler)
+    check_telegram_handler = CommandHandler('check', check_telegram)
+    dispatcher.add_handler(check_telegram_handler)
+    help_handler = CommandHandler('help', help_telegram)
+    dispatcher.add_handler(help_handler)
+    chat_handler = CommandHandler('chat', chat_telegram)
+    dispatcher.add_handler(chat_handler)
+    savemap_handler = CommandHandler('savemap', save_map_telegram)
+    dispatcher.add_handler(savemap_handler)
+    teleport_handler = CommandHandler('teleport', teleport_telegram)
+    dispatcher.add_handler(teleport_handler)
+    town_handler = CommandHandler('town', town_telegram)
+    dispatcher.add_handler(town_handler)
+    cc_handler = CommandHandler('cc', cc_telegram)
+    dispatcher.add_handler(cc_handler)
+    revive_handler = CommandHandler('revive', revive_telegram)
+    dispatcher.add_handler(revive_handler)
+    echo_handler = MessageHandler(Filters.text & ~(Filters.command), echo)
+    updater.start_polling()
+
+
+def solve_rune(g, p, target, delay, delay2, ropelift = (0.8, 0.5, True)):
+    global status_mobsdepawn
+    solved_runes = 0
+    successful_solves = 0
+    failed_solves = 0
+    rune_solved = False
+    (x_str, y_str) = map(str, target)
+    (x_int, x_dec) = x_str.split('.')
+    (y_int, y_dec) = y_str.split('.')
+    x_dec = '5'
+    y_dec = '5'
+    target = (float(x_int + '.' + x_dec), float(y_int + '.' + y_dec))
+    if not rune_solved:
+        progressrune.set(0)
+        status_mobsdepawn = False
+        print('Pathing towards rune...')
+        p.go_to_x(target)
+        progressrune.set(0.2)
+        p.go_to_fix(target)
+        progressrune.set(0.4)
+        p.go_to_rune(target, delay, delay2, ropelift, **('delay', 'delay2', 'ropelift'))
+        progressrune.set(0.6)
+        print('Reached')
+        time.sleep(0.5)
+        p.press(npc_chat_key)
+        progressrune.set(0.8)
+        time.sleep(0.6)
+        img = capture_window()
+        print('Attempting to solve rune...')
+        directions = find_arrow_directions(img)
+        print(f'''Directions: {directions}.''')
+        if len(directions) == 4:
+            progressrune.set(1)
+            for d in directions:
+                p.press(d)
+                time.sleep(0.4)
+            rune_buff = cv2.imread(rune_buff_png)
+            img = capture_window()
+            rune_buff_location = multi_match2(img[(:img.shape[0] // 8, :)], rune_buff, 0.6, False, **('threshold', 'debug'))
+            if rune_buff_location:
+                (x_rune_buff_location, y_rune_buff_location) = rune_buff_location
+
+                try:
+                    pyautogui.rightClick(x_rune_buff_location - 22, y_rune_buff_location + 28)
+                finally:
+                    pass
+                time.sleep(0.1)
+                hwnd = gdi_capture.find_window_from_executable_name(window_title)
+                (x, y, w, h) = win32gui.GetWindowRect(hwnd)
+                centerx = (x + w) / 2
+                centery = (y + h) / 2
+                target = (w - 20, centery)
+                pyautogui.click(target)
+                for i in range(5):
+                    rune_buff2 = cv2.imread(rune_buff_png2)
+                    img = capture_window()
+                    rune_buff_location2 = multi_match2(img[(:img.shape[0] // 8, :)], rune_buff2, 0.9, False, **('threshold', 'debug'))
+                    if rune_buff_location2:
+                        rune_solved = True
+
+                    if rune_solved:
+                        solved_runes += 1
+                        successful_solves += 1
+                        failed_solves = 0
+                        print('Rune has been solved.')
+                    else:
+                        p.hold('LEFT')
+                        time.sleep(random.uniform(1, 2))
+                        p.release('LEFT')
+                        rune_location = g.get_rune_location()
+                        if rune_location is None:
+                            p.hold('RIGHT')
+                            time.sleep(random.uniform(1, 3))
+                            p.release('RIGHT')
+                        rune_location = g.get_rune_location()
+                        if rune_location is None:
+                            rune_solved = True
+                            solved_runes += 1
+                            successful_solves += 1
+                            failed_solves = 0
+                            print('Rune has been solved.')
+                        else:
+                            failed_solves += 1
+                failed_solves += 1
+                print('Trying again after 7s')
+                for i in range(4):
+                    time.sleep(0.25)
+                    p.press(main_attack_key)
+                time.sleep(2)
+                time.sleep(0.1)
+                p.hold('LEFT')
+                time.sleep(0.2)
+                p.press(jump_key)
+                time.sleep(0.01)
+                p.release('LEFT')
+                time.sleep(2)
+                for i in range(4):
+                    time.sleep(0.25)
+                    p.press(main_attack_key)
+                time.sleep(1)
+                if failed_solves >= 3:
+                    time.sleep(0.1)
+                    p.hold('RIGHT')
+                    time.sleep(0.2)
+                    p.press(jump_key)
+                    time.sleep(0.01)
+                    p.release('RIGHT')
+
+        if failed_solves >= 4:
+            print('Rune solver failed 4 times')
+            print('U probably stuck or spinny rune?')
+            send_message('Rune solver failed 4 times')
+            send_screenshot('U probably stuck or spinny rune?')
+            failed_solves = 0
+        if rune_solved:
+            return None
+        return None
+
+
+class PrintToGUI:
+
+    def __init__(self, window):
+        self.log = customtkinter.CTkTextbox(window, 170, 120, 8, 0, **('master', 'width', 'height', 'corner_radius', 'border_spacing'))
+        self.log.place(10, 324, **('x', 'y'))
+        sys.stdout = self
+
+
+    def write(self, text):
+        self.log.insert('end', text)
+        self.log.see('end')
+
+
+
+def show_window_process(icon, item):
+    icon.stop()
+    window.deiconify()
+
+
+def close_self():
+Unsupported opcode: JUMP_IF_NOT_EXC_MATCH
+    save_settings_to_file()
+    pid = os.getpid()
+    current_process = psutil.Process(pid)
+# WARNING: Decompyle incomplete
+
+
+def hide_window_process():
+    global hide_thread
+    hide_thread = kthread.KThread(hide_window_process_thread, **('target',))
+    hide_thread.start()
+
+
+def hide_window_process_thread():
+Warning: block stack is not empty!
+    global window_state, icon
+
+    try:
+        notification.notify('MS-G', 'The bot still running in background', 'MS-G', **('title', 'message', 'app_name'))
+    finally:
+        pass
+    window.withdraw()
+    window_state = 'withdrawn'
+    image = PILImage.open(os.path.join(current_path, 'data', 'Spotify_icon.ico'))
+    menu = pystray.Menu(item('Show', show_window_process), item('Quit', close_self))
+    icon = pystray.Icon('Spotify', image, 'Spotify', menu)
+    icon.run()
+    return None
+
+
+
+def listener():
+Warning: Stack history is not empty!
+Warning: block stack is not empty!
+    global last_event_time, window_state, last_event_time, last_event_time, window_state, last_event_time
+    MIN_EVENT_INTERVAL = 0.5
+    last_event_time = 0
+    config_listener = configparser.ConfigParser()
+    config_listener.read(os.path.join(data_path, 'hotkeys.txt'))
+    start_hotkey = config_listener['DEFAULT']['start_hotkey']
+    stop_hotkey = config_listener['DEFAULT']['stop_hotkey']
+    show_window = config_listener['DEFAULT']['show_window']
+    window_state = 'normal'
+    if kb.is_pressed(start_hotkey):
+        if time.time() - last_event_time >= MIN_EVENT_INTERVAL:
+
+            try:
+                if start_button.cget('state') == 'normal' or start_button.cget('state') == 'enable':
+                    winsound.Beep(784, 333)
+                    start_run()
+            finally:
+                pass
+            last_event_time = time.time()
+            if kb.is_pressed(stop_hotkey):
+                if time.time() - last_event_time >= MIN_EVENT_INTERVAL:
+
+                    try:
+                        winsound.Beep(784, 333)
+                        stop()
+                    finally:
+                        pass
+                    last_event_time = time.time()
+                    if kb.is_pressed(show_window) and time.time() - last_event_time >= MIN_EVENT_INTERVAL:
+
+                        try:
+                            if window_state == 'withdrawn':
+                                winsound.Beep(784, 333)
+                                icon.stop()
+                                window.deiconify()
+                                window_state = 'normal'
+                        finally:
+                            pass
+                        last_event_time = time.time()
+                        time.sleep(0.01)
+                        continue
+
+
+
+
+
+def save_settings_to_file():
+Unsupported opcode: WITH_EXCEPT_START
+    pass
+# WARNING: Decompyle incomplete
+
+
+def load_settings_from_file():
+Warning: Stack history is not empty!
+Warning: block stack is not empty!
+
+    try:
+        configoptions = configparser.ConfigParser()
+        configoptions.read('options.txt')
+        checkbox_var.set(configoptions.getboolean('DEFAULT', 'checkbox_warp_states'))
+        checkbox_var2.set(configoptions.getboolean('DEFAULT', 'checkbox_player_states'))
+        player_options.set(configoptions.get('DEFAULT', 'options_player_states'))
+        checkbox_var3.set(configoptions.getboolean('DEFAULT', 'checkbox_hunter_portal_states'))
+        hunter_portal_options.set(configoptions.get('DEFAULT', 'options_hunter_portal_states'))
+        checkbox_var5.set(configoptions.getboolean('DEFAULT', 'checkbox_rune_solver_states'))
+        checkbox_var6.set(configoptions.getboolean('DEFAULT', 'checkbox_elite_boss_states'))
+        eb_options.set(configoptions.get('DEFAULT', 'options_elite_boss_states'))
+        checkbox_var7.set(configoptions.getboolean('DEFAULT', 'checkbox_death_states'))
+        death_options.set(configoptions.get('DEFAULT', 'options_death_states'))
+    finally:
+        return None
+        return None
+
